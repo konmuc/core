@@ -89,13 +89,13 @@ userController.createUserDetails = function(req, res) {
                 username: req.params.username
             },
             function(err, user) {
-                if(!err) {
+                if(err === null && user !== null) {
                     res.status(400).send('User already exists!');
                 }
                 else {
                     UserDetail.create(
                         {
-                            username: req.body.username,
+                            username: req.params.username,
                             gender: req.body.gender,
                             firstname: req.body.firstname,
                             lastname: req.body.lastname,

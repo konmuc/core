@@ -19,7 +19,7 @@ exports.roles = {
             },
             {
                 name: 'users:create',
-                when: (req, params) => req.user.username === params.username
+                when: (req, params) => req.user.username
             },
             {
                 name: 'posts:delete',

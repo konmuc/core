@@ -28,6 +28,15 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.header('Access-Control-Allow-Credentials', true);
+
+    next();
+  });
+
 // authc stuff
 app.use('/auth', authcRouter.default);
 app.use(authc.default({ secret: '359D15ED4F861385A2A32A5AB3D7A1FACD2D11F057BF722204EE2043F05F6EA7'}));

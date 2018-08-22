@@ -9,13 +9,16 @@ const usersRouter = express.Router();
 
 const authzClient = configureAuthz.default(Object.assign(authzConfig, { role: async req => req.user.toObject().role }));
 
+// Returns list of all users
 usersRouter.get('/', authzClient('users:view'), userContoller.index);
 
+// Returns specific user
 usersRouter.get('/:username', authzClient('users:view'), userContoller.specificUserDetails);
 
-usersRouter.patch('/:username', authzClient('users:edit' , async (req) => {req.user = await User.findOne({ username: req.params.username }); debugger; return req}), userContoller.patchUserDetails);
+// Patches userdetails
+usersRouter.patch('/:username', authzClient('users:edit'), userContoller.patchUserDetails);
 
-//TODO: Get Username of Reqeust and only allow him to create his own profile
-usersRouter.post('/:username', authzClient('users:create', async (req) => {req.user = await User.findOne({ username: req.params.username }); return req}), userContoller.createUserDetails);
+// First creation of userdetails
+usersRouter.post('/:username', authzClient('users:create'), userContoller.createUserDetails);
 
 module.exports = usersRouter;

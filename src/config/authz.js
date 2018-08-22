@@ -11,19 +11,19 @@ exports.roles = {
         can: [
             {
                 name: 'users/posts:view',
-                when: (req, params) => req.user.username === params.username
+                when: (req, params) => req.user.username === req.params.username
             },
             {
                 name: 'users:edit',
-                when: (req, params) => req.user.username === params.username
+                when: (req, params) => req.user.username === req.params.username
             },
             {
                 name: 'users:create',
-                when: (req, params) => req.user.username
+                when: (req, params) => req.user.username === req.params.username
             },
             {
                 name: 'posts:delete',
-                when: (req, params) => req.user.username === params.username
+                when: (req, params) => req.user.username === req.params.username
             }
         ],
         inherits: [ 'guest' ]

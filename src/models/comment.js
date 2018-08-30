@@ -9,7 +9,16 @@ const CommentModel = new Schema({
     date: Number,
     username: String,
     votes: {
-        type: Schema.Types.ObjectId, ref: 'Votes'
+        upvotes: [
+            {
+                userId: String
+            }
+        ],
+        downvotes: [
+            {
+                userId: String
+            }
+        ]
     }
 });
 

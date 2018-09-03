@@ -11,7 +11,8 @@ const authcRouter = require('@konmuc/authc/router');
 // Move config out of here
 // Maybe also the routes ?!
 const port = 8088;
-const ip = "127.0.0.1";
+// const ip = "0.0.0.0";
+const ip = "::";
 
 // Setup Mongoos to the local MongoDB instance
 mongoose.connect('mongodb://localhost/kongeos');

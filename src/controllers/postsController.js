@@ -1,4 +1,7 @@
 const Post = require('../models/post');
+const Votes = require('../models/votes');
+const Comments = require('../models/comment');
+const Geolocation = require('../models/geolocation');
 
 const postsController = function(){}
 
@@ -14,7 +17,7 @@ postsController.index = function(req, res) {
                 if(!err && (posts.length > 0)) {
                     posts.forEach(
                         function(post) {
-                            postMap[post.postId] = post;
+                            postMap[post._id] = post;
                         }
                     );
                     res.status(200).send(postMap);
@@ -51,7 +54,7 @@ postsController.postsOfSpecificUser = function(req, res) {
 
                 posts.forEach(
                     function(post) {
-                        postMap[post.postId] = post;
+                        postMap[post._id] = post;
                     }
                 );
                 return res.status(200).send(postMap);
@@ -67,27 +70,22 @@ postsController.postsOfSpecificUser = function(req, res) {
 // Create post
 postsController.createPost = function(req, res) {
     try {
-        Post.create(
-            {
-                username: req.body.username,
-                content: {
-                    text: req.body.content.text,
-                    meta: {
-                        date: req.body.content.meta.date,
-                        image: req.body.content.meta.image,
-                        geoloation: {
-                            lat: req.body.content.meta.geoloation.lat,
-                            long: req.body.content.meta.geoloation.long
-                        }
+        var post = new Post({
+            username: req.body.username,
+            content: {
+                text: req.body.content.text,
+                metadata: {
+                    date: req.body.content.metadata.date,
+                    image: req.body.content.metadata.image,
+                    geolocation: {
+                        lat: req.body.content.metadata.geolocation.lat,
+                        lon: req.body.content.metadata.geolocation.lon
                     }
-                },
-                votes: {
-                    upvotes: 0,
-                    downvotes: 0
-                },
-                comments: [],
-                isHidden: false
-            },
+                }
+            }
+        });
+
+        post.save(
             function(err, post) {
                 if(err) {
                     return res.status(500).send('ERROR: postsController.createPost - While Post.create()' + err)

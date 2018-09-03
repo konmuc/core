@@ -39,14 +39,14 @@ app.use(function(req, res, next) {
 
 // authc stuff
 app.use('/auth', authcRouter.default);
-app.use(authc.default({ secret: '359D15ED4F861385A2A32A5AB3D7A1FACD2D11F057BF722204EE2043F05F6EA7'}));
+app.use(authc.default({ secret: '359D15ED4F861385A2A32A5AB3D7A1FACD2D11F057BF722204EE2043F05F6EA7' }));
 
 // API Routes
 app.use('/v1/users', require('./routers/usersRouter'));
 app.use('/v1/posts', require('./routers/postsRouter'));
 app.use('/', require('./routers/index'));
 
-// Error handler
+// Error handler, which outputs JSON to the client.
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     let { status = 500, message } = err;
 

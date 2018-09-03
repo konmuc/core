@@ -56,13 +56,9 @@ app.use(function(req, res, next) {
 
 // authc stuff
 app.use('/auth', authcRouter.default);
-<<<<<<< HEAD
 app.use(authc.default({
     secret: '359D15ED4F861385A2A32A5AB3D7A1FACD2D11F057BF722204EE2043F05F6EA7'
 }));
-=======
-app.use(authc.default({ secret: '359D15ED4F861385A2A32A5AB3D7A1FACD2D11F057BF722204EE2043F05F6EA7' }));
->>>>>>> aa1bd20aa9525d33bb84803f9bff366ec6a5b578
 
 // API Routes
 app.use('/v1/users', require('./routers/usersRouter'));

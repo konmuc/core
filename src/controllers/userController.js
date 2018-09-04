@@ -56,15 +56,15 @@ userController.patchUserDetails = function(req, res) {
                 username: req.params.username
             },
             {
-                gender: req.gender,
-                firstname: req.firstname,
-                lastname: req.lastname,
-                email: req.email,
-                profilePicture: req.profilePicture,
-                motto: req.motto,
-                university: req.university,
-                cityExcursion: req.cityExcursion,
-                professionalExcursion: req.professionalExcursion
+                gender: req.body.gender,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                email: req.body.email,
+                profilePicture: req.body.profilePicture,
+                motto: req.body.motto,
+                university: req.body.university,
+                cityExcursion: req.body.cityExcursion,
+                professionalExcursion: req.body.professionalExcursion
             },
             function(err, user) {
                 if(err){

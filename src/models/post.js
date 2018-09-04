@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PostModel = new Schema({
-    postId: Number,
     username: String,
     content: {
         text: String,
@@ -10,16 +9,41 @@ const PostModel = new Schema({
             date: Number,
             image: String,
             geolocation: {
-                type: Schema.Types.ObjectId, ref: 'Geolocation'
+                lat: String,
+                lon: String
             }
         }
     },
     votes: {
-        type: Schema.Types.ObjectId, ref: 'Votes'
+        upvotes: [
+            {
+                userId: String
+            }
+        ],
+        downvotes: [
+            {
+                userId: String
+            }
+        ]
     },
-    comments: [{
-        type: Schema.Types.ObjectId, ref: 'Comment'
-    }],
+    comments: [ {
+            text: String,
+            date: Number,
+            username: String,
+            votes: {
+                upvotes: [
+                    {
+                        userId: String
+                    }
+                ],
+                downvotes: [
+                    {
+                        userId: String
+                    }
+                ]
+            }
+        }
+    ],
     isHidden: Boolean
 });
 

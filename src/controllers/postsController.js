@@ -1,7 +1,4 @@
 const Post = require('../models/post');
-const Votes = require('../models/votes');
-const Comments = require('../models/comment');
-const Geolocation = require('../models/geolocation');
 
 const postsController = function(){}
 
@@ -62,7 +59,8 @@ postsController.postsOfSpecificUser = function(req, res) {
         );
     }
     catch(err) {
-        return res.status(500).send('ERROR: postsController.postsOfSpecificUser' + err);
+        return res.status(500).send(
+            'ERROR: postsController.postsOfSpecificUser ' + err);
     }
 }
 
@@ -82,13 +80,20 @@ postsController.createPost = function(req, res) {
                         lon: req.body.content.metadata.geolocation.lon
                     }
                 }
-            }
+            },
+            votes: {
+                upvotes: [],
+                downvotes: []
+            },
+            comments: []
         });
 
         post.save(
             function(err, post) {
                 if(err) {
-                    return res.status(500).send('ERROR: postsController.createPost - While Post.create()' + err)
+                    return res.status(500).send(
+                        'ERROR: postsController.createPost -' +
+                        ' While Post.create() ' + err)
                 }
                 return res.status(200).send(post);
             }
@@ -107,14 +112,16 @@ postsController.specificPostById = function(req, res) {
             req.params.postId,
             function(err, post){
                 if(err) {
-                    return res.status(404).send('ERROR: postsController.specificPostById - While Post.findById()' + err)
+                    return res.status(404).send(
+                        'ERROR: postsController.specificPostById -' +
+                        ' While Post.findById() ' + err)
                 }
                 return res.status(200).send(post);
             }
         )
     }
     catch(err) {
-        res.status(500).send('ERROR: postsController.specificPostById' + err);
+        res.status(500).send('ERROR: postsController.specificPostById ' + err);
     }
 }
 
@@ -127,14 +134,223 @@ postsController.hideSpecificPostById = function(req, res) {
             {isHidden: true},
             function(err, post) {
                 if(err) {
-                    return res.status(404).send('ERROR: postsController.hideSpecificPostById - While Post.findByIdAndUpdate()' + err)
+                    return res.status(404).send(
+                        'ERROR: postsController.hideSpecificPostById -' +
+                        ' While Post.findByIdAndUpdate() ' + err)
                 }
                 return res.status(200).send();
             }
         )
     }
     catch(err) {
-        res.status(500).send('ERROR: postsController.hideSpecificPostById' + err);
+        res.status(500).send('ERROR: postsController.hideSpecificPostById ' + err);
+    }
+}
+
+postsController.postUpVote = function(req, res) {
+    try {
+        Post.findById(
+            req.params.postId,
+            function(err, post) {
+                if(err) {
+                    return res.status(404).send(
+                        'ERROR: postsController.postUpVote -' +
+                        ' While Post.findById() ' + err)
+                }
+                if((post.votes.downvotes.map(
+                        function(e) {
+                            return e.userId.toString();
+                        }
+                    ).indexOf(req.user.id.toString()) > -1) &&
+                    (post.votes.upvotes.map(
+                        function(e) {
+                            return e.userId.toString();
+                        }
+                    ).indexOf(req.user.id.toString()) > -1)
+                    )
+                {
+                    return res.status(200).send("Already voted!");
+                }
+                else {
+                    post.votes.upvotes.push(
+                        {
+                            userId: req.user.id
+                        }
+                    );
+                    post.save(
+                        function(err, post) {
+                            if(err) {
+                                return res.status(404).send(
+                                    'ERROR: postsController.postUpVote - ' + 
+                                    'While Post.findById() ' + err)
+                            }
+                            return res.status(200).send(post);
+                        }
+                    );
+                }
+                
+            }
+        )
+    }
+    catch(err){
+        res.status(500).send('ERROR: postsController.postUpVote ' + err);
+    }
+}
+
+postsController.postDownVote = function(req, res) {
+    try {
+        Post.findById(
+            req.params.postId,
+            function(err, post) {
+                if(err) {
+                    return res.status(404).send(
+                        'ERROR: postsController.postDownVote -' +
+                        ' While Post.findById() ' + err)
+                }
+                if((post.votes.downvotes.map(
+                        function(e) {
+                            return e.userId.toString();
+                        }
+                    ).indexOf(req.user.id) > -1) &&
+                    (post.votes.upvotes.map(
+                        function(e) {
+                            return e.userId.toString();
+                        }
+                    ).indexOf(req.user.id) > -1)
+                    )
+                {
+                    return res.status(200).send("Already voted!");
+                }
+                else {
+                    post.votes.downvotes.push(
+                        {
+                            userId: req.user.id
+                        }
+                    );
+                    post.save(
+                        function(err, post) {
+                            if(err) {
+                                return res.status(404).send(
+                                    'ERROR: postsController.postDownVote -' +
+                                    ' While post.save() ' + err)
+                            }
+                            return res.status(200).send(post);
+                        }
+                    );
+                }
+                
+            }
+        )
+    }
+    catch(err){
+        res.status(500).send('ERROR: postsController.postDownVote' + err);
+    }
+}
+
+postsController.addComment = function(req, res) {
+    try {
+        Post.findById(
+            req.params.postId,
+            function(err, post) {
+                if(err) {
+                    return res.status(404).send(
+                        'ERROR: postsController.addComment -' +
+                        ' While Post.findById() ' + err)
+                }
+                else {
+                    post.comments.push(
+                        {
+                            username: req.body.username,
+                            content: {
+                                text: req.body.content.text,
+                                metadata: {
+                                    date: req.body.content.metadata.date,
+                                    image: req.body.content.metadata.image,
+                                    geolocation: {
+                                        lat: req.body.content.metadata.geolocation.lat,
+                                        lon: req.body.content.metadata.geolocation.lon
+                                    }
+                                }
+                            },
+                            votes: {
+                                upvotes: [],
+                                downvotes: []
+                            }
+                        }
+                    )
+                    post.save(
+                        function(err, post) {
+                            if(err) {
+                                return res.status(404).send(
+                                    'ERROR: postsController.addComment -' +
+                                    ' While post.save() ' + err)
+                            }
+                            return res.status(200).send(post);
+                        }
+                    );
+                }
+            }
+        )
+    }
+    catch(err) {
+        res.status(500).send('ERROR: postsController.addComment ' + err);
+    }
+}
+
+postsController.commentUpVote = function(req, res) {
+    try {
+        Post.findById(
+            req.params.postId,
+            function(err, post) {
+                if(err) {
+                    return res.status(404).send(
+                        'ERROR: postsController.commentUpVote -' +
+                        ' While Post.findById() ' + err)
+                }
+                index = post.comments.map(
+                    function(e) {
+                        return e.id.toString();
+                    }
+                ).indexOf(req.params.commentId)
+
+                if(index > -1)
+                {
+                    if((post.comments[index].map(
+                            function(e) {
+                                return e.userId.toString();
+                            }
+                        ).indexOf(req.user.id) > -1) &&
+                        (post.comments[index].map(
+                            function(e) {
+                                return e.userId.toString();
+                            }
+                        ).indexOf(req.user.id) > -1)
+                    ) {
+                        return res.status(200).send("Already voted!");
+                    }
+                    else {
+                        post.comments[index].upvotes.push(
+                            {
+                                userId: req.user.id
+                            }
+                        );
+                        post.save(
+                            function(err, post) {
+                                if(err) {
+                                    return res.status(404).send(
+                                        'ERROR: postsController.commentUpVote - ' + 
+                                        'While Post.findById() ' + err)
+                                }
+                                return res.status(200).send(post);
+                            }
+                        );
+                    }
+                }
+            }
+        )
+    }
+    catch(err){
+        res.status(500).send('ERROR: postsController.commentUpVote ' + err);
     }
 }
 

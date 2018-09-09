@@ -15,7 +15,7 @@ postsRouter.get('/:postId', authzClient('users/posts:view'), postsController.spe
 
 postsRouter.post('/', authzClient('users:create',
     async (req) => {
-        req.params = await User.findOne({ username: req.user.username });
+        req.params.user = await User.findOne({ username: req.user.username });
         return req
     }),
     postsController.createPost);
@@ -24,9 +24,60 @@ postsRouter.get('/:username', authzClient('users/posts:view'), postsController.p
 
 postsRouter.delete('/:postId', authzClient('posts:delete',
     async (req) => {
-        req.params = await User.findOne({ username: req.user.username });
+        req.params.user = await User.findOne({ username: req.user.username });
         return req
     }),    
-    postsController.hideSpecificPostById);
+    postsController.hideSpecificPostById
+);
+
+postsRouter.get(
+    '/:postId/upvote',
+    authzClient('users/posts:view',
+    async (req) => {
+        req.params.user = await User.findOne({ username: req.user.username });
+        return req
+    }),
+    postsController.postUpVote
+);
+
+postsRouter.get(
+    '/:postId/downvote',
+    authzClient('users/posts:view',
+    async (req) => {
+        req.params.user = await User.findOne({ username: req.user.username });
+        return req
+    }),
+    postsController.postDownVote
+);
+
+postsRouter.post(
+    '/:postId/',
+    authzClient('users/posts:view',
+    async (req) => {
+        req.params.user = await User.findOne({ username: req.user.username });
+        return req
+    }),
+    postsController.addComment
+);
+
+postsRouter.get(
+    '/:postId/:commentId/upvote',
+    authzClient('users/posts:view',
+    async (req) => {
+        req.params.user = await User.findOne({ username: req.user.username });
+        return req
+    }),
+    postsController.commentUpVote
+);
+
+// postsRouter.get(
+//     '/:postId/:commentId/downvote',
+//     authzClient('users/posts:view',
+//     async (req) => {
+//         req.params.user = await User.findOne({ username: req.user.username });
+//         return req
+//     }),
+//     postsController.commentDownVote
+// );
 
 module.exports = postsRouter;

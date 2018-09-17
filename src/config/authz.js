@@ -15,15 +15,15 @@ exports.roles = {
             },
             {
                 name: 'users:edit',
-                when: (req, params) => req.user.username === req.params.username
+                when: (req, params) => req.user.username === req.params.user.username
             },
             {
                 name: 'users:create',
-                when: (req, params) => req.user.username === req.params.username
+                when: (req, params) => req.user.username === req.params.user.username
             },
             {
                 name: 'posts:delete',
-                when: (req, params) => req.user.username === req.params.username
+                when: (req, params) => req.user.username === req.params.user.username
             }
         ],
         inherits: [ 'guest' ]

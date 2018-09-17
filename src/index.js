@@ -63,6 +63,7 @@ app.use(authc.default({
 // API Routes
 app.use('/v1/users', require('./routers/usersRouter'));
 app.use('/v1/posts', require('./routers/postsRouter'));
+app.use('/v1/events', require('./routers/eventsRouter'));
 app.use('/', require('./routers/index'));
 
 // Error handler, which outputs JSON to the client.

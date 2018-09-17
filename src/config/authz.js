@@ -41,6 +41,18 @@ exports.roles = {
             {
                 name: 'posts:delete',
                 when: (req) => req.user.isAdmin
+            },
+            {
+                name: 'events:create',
+                when: (req) => req.user.isAdmin
+            },
+            {
+                name: 'events:edit',
+                when: (req) => req.user.isAdmin
+            },
+            {
+                name: 'events:delete',
+                when: (req) => req.user.isAdmin
             }
         ],
         inherits: [ 'user' ]

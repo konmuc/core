@@ -11,13 +11,18 @@ const authcRouter = require('@konmuc/authc/router');
 // Move config out of here
 // Maybe also the routes ?!
 const port = 8088;
-// const ip = "0.0.0.0";
-const ip = "::";
+// const ip = '0.0.0.0';
+const ip = '::';
 
 // Setup Mongoos to the local MongoDB instance
-mongoose.connect('mongodb://localhost/kongeos');
+mongoose.connect(
+    'mongodb://localhost/kongeos'
+);
 mongoose.Promise = global.Promise;
-mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error: '));
+mongoose.connection.on(
+    'error',
+    console.error.bind(console, 'MongoDB connection error: ')
+);
 
 
 // Setup Express instance with some extra properties
@@ -30,17 +35,30 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.header('Access-Control-Allow-Credentials', true);
-
+    res.header(
+        'Access-Control-Allow-Origin',
+        '*'
+    );
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
+    );
+    res.header(
+        'Access-Control-Allow-Methods',
+        'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+    );
+    res.header(
+        'Access-Control-Allow-Credentials',
+        true
+    );
     next();
-  });
+});
 
 // authc stuff
 app.use('/auth', authcRouter.default);
-app.use(authc.default({ secret: '359D15ED4F861385A2A32A5AB3D7A1FACD2D11F057BF722204EE2043F05F6EA7' }));
+app.use(authc.default({
+    secret: '359D15ED4F861385A2A32A5AB3D7A1FACD2D11F057BF722204EE2043F05F6EA7'
+}));
 
 // API Routes
 app.use('/v1/users', require('./routers/usersRouter'));

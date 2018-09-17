@@ -9,7 +9,8 @@ const EventModel = new Schema({
         adress: String,
         room: String,
         geolocation: {
-            type: Schema.Types.ObjectId, ref: 'Geolocation'
+            lat: String,
+            lon: String
         }
     },
     time: {

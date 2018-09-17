@@ -70,14 +70,14 @@ postsRouter.get(
     postsController.commentUpVote
 );
 
-// postsRouter.get(
-//     '/:postId/:commentId/downvote',
-//     authzClient('users/posts:view',
-//     async (req) => {
-//         req.params.user = await User.findOne({ username: req.user.username });
-//         return req
-//     }),
-//     postsController.commentDownVote
-// );
+postsRouter.get(
+    '/:postId/:commentId/downvote',
+    authzClient('users/posts:view',
+    async (req) => {
+        req.params.user = await User.findOne({ username: req.user.username });
+        return req
+    }),
+    postsController.commentDownVote
+);
 
 module.exports = postsRouter;

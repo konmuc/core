@@ -30,30 +30,12 @@ exports.roles = {
     },
     admin: {
         can: [
-            {
-                name: 'users/posts:view',
-                when: (req) => req.user.isAdmin
-            },
-            {
-                name: 'users:edit',
-                when: (req) => req.user.isAdmin
-            },
-            {
-                name: 'posts:delete',
-                when: (req) => req.user.isAdmin
-            },
-            {
-                name: 'events:create',
-                when: (req) => req.user.isAdmin
-            },
-            {
-                name: 'events:edit',
-                when: (req) => req.user.isAdmin
-            },
-            {
-                name: 'events:delete',
-                when: (req) => req.user.isAdmin
-            }
+            'users/posts:view',
+            'users:edit',
+            'posts:delete',
+            'events:create',
+            'events:edit',
+            'events:delete'
         ],
         inherits: [ 'user' ]
     }

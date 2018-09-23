@@ -73,13 +73,14 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     res.status(status).send({ status, message });
 });
 
-credentials = {
+const options = {
     key: process.env.SSL_PRIVATEKEY,
     cert: process.env.SSL_CERTIFICATE,
-    ca: process.env.SSL_CA
+    ca: process.env.SSL_CA,
+    secureProtocol: "TLSv1_2_method"
 }
 
-const httpsServer = https.createServer(credentials, app);
+const httpsServer = https.createServer(options, app);
 httpsServer.listen(process.env.HTTPS_PORT, () => {
         console.log('HTTPS Server running on port ' + process.env.HTTPS_PORT);
 });

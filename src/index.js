@@ -3,20 +3,16 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const https = require('https');
+const fs = require('fs');
+require('dotenv').config();
+
 const authc = require('@konmuc/authc');
 const authcRouter = require('@konmuc/authc/router');
 
-
-// TODO
-// Move config out of here
-// Maybe also the routes ?!
-const port = 8088;
-// const ip = '0.0.0.0';
-const ip = '::';
-
 // Setup Mongoos to the local MongoDB instance
 mongoose.connect(
-    'mongodb://localhost/kongeos'
+    process.env.MONGO_HOST
 );
 mongoose.Promise = global.Promise;
 mongoose.connection.on(
@@ -57,7 +53,8 @@ app.use(function(req, res, next) {
 // authc stuff
 app.use('/auth', authcRouter.default);
 app.use(authc.default({
-    secret: '359D15ED4F861385A2A32A5AB3D7A1FACD2D11F057BF722204EE2043F05F6EA7'
+    accessTokenExpiration: { minutes: process.env.AUTHC_EXPIRATIONTIME_MIN },
+    secret: process.env.AUTHC_SECRET
 }));
 
 // API Routes
@@ -76,6 +73,13 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
     res.status(status).send({ status, message });
 });
 
-app.listen(port, ip, function() {
-    console.log('Express server listening on %d', port);
+credentials = {
+    key: process.env.SSL_PRIVATEKEY,
+    cert: process.env.SSL_CERTIFICATE,
+    ca: process.env.SSL_CA
+}
+
+const httpsServer = https.createServer(credentials, app);
+httpsServer.listen(process.env.HTTPS_PORT, () => {
+        console.log('HTTPS Server running on port ' + process.env.HTTPS_PORT);
 });

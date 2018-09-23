@@ -13,9 +13,17 @@ usersRouter.get('/', authzClient('users:view'), userContoller.index);
 
 usersRouter.get('/:username', authzClient('users:view'), userContoller.specificUserDetails);
 
-usersRouter.patch('/:username', authzClient('users:edit'), userContoller.patchUserDetails);
+usersRouter.patch('/:username', authzClient('users:edit',
+async (req) => {
+    req.params.user = await User.findOne({ username: req.user.username });
+    return req
+}), userContoller.patchUserDetails);
 
 //TODO: Get Username of Reqeust and only allow him to create his own profile
-usersRouter.post('/:username', authzClient('users:create'), userContoller.createUserDetails);
+usersRouter.post('/:username', authzClient('users:create',
+async (req) => {
+    req.params.user = await User.findOne({ username: req.user.username });
+    return req
+}), userContoller.createUserDetails);
 
 module.exports = usersRouter;

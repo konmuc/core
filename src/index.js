@@ -74,9 +74,9 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 });
 
 const options = {
-    key: process.env.SSL_PRIVATEKEY,
-    cert: process.env.SSL_CERTIFICATE,
-    ca: process.env.SSL_CA,
+    key: fs.readFileSync(process.env.SSL_PRIVATEKEY),
+    cert: fs.readFileSync(process.env.SSL_CERTIFICATE),
+    ca: fs.readFileSync(process.env.SSL_CA),
     secureProtocol: "TLSv1_2_method"
 }
 

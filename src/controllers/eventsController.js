@@ -23,7 +23,7 @@ eventController.index = function(req, res) {
         )
     }
     catch(err) {
-        res.status(500).send('ERROR: eventConroller.index');
+        return res.status(500).send('ERROR: eventConroller.index');
     }
 }
 
@@ -64,7 +64,7 @@ eventController.createEvent = function(req, res) {
         )
     }
     catch(err) {
-        res.status(500).send('ERROR: eventController.createEvent' + err)
+        return res.status(500).send('ERROR: eventController.createEvent' + err)
     }
 }
 
@@ -83,7 +83,7 @@ eventController.specificEventById = function(req, res) {
         )
     }
     catch(err) {
-        res.status(500).send('ERROR: eventController.specificEventById ' + err);
+        return res.status(500).send('ERROR: eventController.specificEventById ' + err);
     }
 }
 
@@ -102,7 +102,7 @@ eventController.deleteSpecificEventById = function(req, res) {
         )
     }
     catch(err) {
-        res.status(500).send('ERROR: eventController.deleteSpecificEventById ' + err);
+        return res.status(500).send('ERROR: eventController.deleteSpecificEventById ' + err);
     }
 }
 
@@ -141,7 +141,7 @@ eventController.updateSpecificEventById = function(req, res) {
         )
     }
     catch(err){
-        res.status(500).send('ERROR: eventController.updateSpecificEventById ' + err);
+        return res.status(500).send('ERROR: eventController.updateSpecificEventById ' + err);
     }
 }
 

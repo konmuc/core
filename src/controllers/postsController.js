@@ -26,7 +26,7 @@ postsController.index = function(req, res) {
         )
     }
     catch (err) {
-        res.status(500).send('ERROR:postsController.index');
+        return res.status(500).send('ERROR:postsController.index');
     }
 };
 
@@ -100,7 +100,7 @@ postsController.createPost = function(req, res) {
         )
     }
     catch(err) {
-        res.status(500).send('ERROR: postsController.createPost' + err);
+        return res.status(500).send('ERROR: postsController.createPost' + err);
     }
 }
 
@@ -143,7 +143,7 @@ postsController.hideSpecificPostById = function(req, res) {
         )
     }
     catch(err) {
-        res.status(500).send('ERROR: postsController.hideSpecificPostById ' + err);
+        return res.status(500).send('ERROR: postsController.hideSpecificPostById ' + err);
     }
 }
 
@@ -187,7 +187,7 @@ postsController.postUpVote = function(req, res) {
         )
     }
     catch(err){
-        res.status(500).send('ERROR: postsController.postUpVote ' + err);
+        return res.status(500).send('ERROR: postsController.postUpVote ' + err);
     }
 }
 
@@ -231,7 +231,7 @@ postsController.postDownVote = function(req, res) {
         )
     }
     catch(err){
-        res.status(500).send('ERROR: postsController.postDownVote' + err);
+        return res.status(500).send('ERROR: postsController.postDownVote' + err);
     }
 }
 
@@ -284,7 +284,7 @@ postsController.addComment = function(req, res) {
         )
     }
     catch(err) {
-        res.status(500).send('ERROR: postsController.addComment ' + err);
+        return res.status(500).send('ERROR: postsController.addComment ' + err);
     }
 }
 
@@ -342,7 +342,7 @@ postsController.commentUpVote = function(req, res) {
         )
     }
     catch(err){
-        res.status(500).send('ERROR: postsController.commentUpVote ' + err);
+        return res.status(500).send('ERROR: postsController.commentUpVote ' + err);
     }
 }
 
@@ -399,7 +399,7 @@ postsController.commentDownVote = function(req, res) {
         )
     }
     catch(err){
-        res.status(500).send('ERROR: postsController.commentDownVote ' + err);
+        return res.status(500).send('ERROR: postsController.commentDownVote ' + err);
     }
 }
 

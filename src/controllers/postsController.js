@@ -69,9 +69,15 @@ postsController.postsOfSpecificUser = function(req, res) {
 postsController.createPost = function(req, res) {
 
     let text = req.body.content.text ? req.body.content.text : null;
-    let image = req.body.content.metadata.image ? req.body.content.metadata.image : "";
-    let lat = req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lat : "NaN";
-    let lon = req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lon : "NaN";
+    let image = "";
+    let lat = "NaN";
+    let lon = "NaN";
+    if(req.body.content.metadata !== undefined)
+    {
+        image = (req.body.content.metadata.image !== undefined) ? req.body.content.metadata.image : "";
+        lat = (req.body.content.metadata.geolocation.lat !== undefined) ? req.body.content.metadata.geolocation.lat : "NaN";
+        lon = (req.body.content.metadata.geolocation.lat !== undefined) ? req.body.content.metadata.geolocation.lon : "NaN";
+    }
 
     try {
         var post = new Post({
@@ -244,9 +250,15 @@ postsController.postDownVote = function(req, res) {
 postsController.addComment = function(req, res) {
 
     let text = req.body.content.text ? req.body.content.text : null;
-    let image = req.body.content.metadata.image ? req.body.content.metadata.image : "";
-    let lat = req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lat : "NaN";
-    let lon = req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lon : "NaN";
+    let image = "";
+    let lat = "NaN";
+    let lon = "NaN";
+    if(req.body.content.metadata !== undefined)
+    {
+        image = (req.body.content.metadata.image !== undefined) ? req.body.content.metadata.image : "";
+        lat = (req.body.content.metadata.geolocation.lat !== undefined) ? req.body.content.metadata.geolocation.lat : "NaN";
+        lon = (req.body.content.metadata.geolocation.lat !== undefined) ? req.body.content.metadata.geolocation.lon : "NaN";
+    }
 
     try {
         Post.findById(

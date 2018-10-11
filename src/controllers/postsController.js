@@ -73,11 +73,11 @@ postsController.createPost = function(req, res) {
             content: {
                 text: req.body.content.text,
                 metadata: {
-                    date: req.body.content.metadata.date,
-                    image: req.body.content.metadata.image,
+                    date: Date.now(),
+                    image: req.body.content.metadata.image ? req.body.content.metadata.image : "" ,
                     geolocation: {
-                        lat: req.body.content.metadata.geolocation.lat,
-                        lon: req.body.content.metadata.geolocation.lon
+                        lat: req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lat : "NaN",
+                        lon: req.body.content.metadata.geolocation.lon ? req.body.content.metadata.geolocation.lon : "NaN"
                     }
                 }
             },
@@ -255,7 +255,7 @@ postsController.addComment = function(req, res) {
                                     content: {
                                         text: req.body.content.text,
                                         metadata: {
-                                            date: req.body.content.metadata.date,
+                                            date: Date.now(),
                                             image: req.body.content.metadata.image,
                                             geolocation: {
                                                 lat: req.body.content.metadata.geolocation.lat,

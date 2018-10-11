@@ -73,9 +73,6 @@ postsController.createPost = function(req, res) {
     let lat = req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lat : "NaN";
     let lon = req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lon : "NaN";
 
-    if(text === null)
-        return res.status(500).send('ERROR: postsController.createPost' + err);
-
     try {
         var post = new Post({
             username: req.user.username,
@@ -250,9 +247,6 @@ postsController.addComment = function(req, res) {
     let image = req.body.content.metadata.image ? req.body.content.metadata.image : "";
     let lat = req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lat : "NaN";
     let lon = req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lon : "NaN";
-
-    if(text === null)
-        return res.status(500).send('ERROR: postsController.addComment' + err);
 
     try {
         Post.findById(

@@ -67,17 +67,26 @@ postsController.postsOfSpecificUser = function(req, res) {
 // Function createPost [Post]
 // Create post
 postsController.createPost = function(req, res) {
+
+    let text = req.body.content.text ? req.body.content.text : null;
+    let image = req.body.content.metadata.image ? req.body.content.metadata.image : "";
+    let lat = req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lat : "NaN";
+    let lon = req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lon : "NaN";
+
+    if(text === null)
+        return res.status(500).send('ERROR: postsController.createPost' + err);
+
     try {
         var post = new Post({
             username: req.user.username,
             content: {
-                text: req.body.content.text,
+                text: text,
                 metadata: {
                     date: Date.now(),
-                    image: req.body.content.metadata.image ? req.body.content.metadata.image : "" ,
+                    image: image,
                     geolocation: {
-                        lat: req.body.content.metadata.geolocation.lat ? req.body.content.metadata.geolocation.lat : "NaN",
-                        lon: req.body.content.metadata.geolocation.lon ? req.body.content.metadata.geolocation.lon : "NaN"
+                        lat: lat,
+                        lon: lon
                     }
                 }
             },

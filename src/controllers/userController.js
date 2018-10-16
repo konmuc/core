@@ -71,7 +71,7 @@ userController.patchUserDetails = function(req, res) {
                     return res.status(500).send('ERROR: userController.patchUserDetails' + err);
                 }
                 
-                return res.status(204).send('Successfull patch of user profile');
+                return res.status(200).send('Successfull patch of user profile');
             }
         )
     }
@@ -90,7 +90,8 @@ userController.createUserDetails = function(req, res) {
             },
             function(err, user) {
                 if(err === null && user !== null) {
-                    res.status(400).send('User already exists!');
+                    // res.status(400).send('User already exists!');
+                    return userController.patchUserDetails(req, res);
                 }
                 else {
                     UserDetail.create(

@@ -15,33 +15,27 @@ exports.roles = {
             },
             {
                 name: 'users:edit',
-                when: (req, params) => req.user.username === req.params.username
+                when: (req, params) => req.user.username === req.params.user.username
             },
             {
                 name: 'users:create',
-                when: (req, params) => req.user.username === req.params.username
+                when: (req, params) => req.user.username === req.params.user.username
             },
             {
                 name: 'posts:delete',
-                when: (req, params) => req.user.username === req.params.username
+                when: (req, params) => req.user.username === req.params.user.username
             }
         ],
         inherits: [ 'guest' ]
     },
     admin: {
         can: [
-            {
-                name: 'users/posts:view',
-                when: (req) => req.user.isAdmin
-            },
-            {
-                name: 'users:edit',
-                when: (req) => req.user.isAdmin
-            },
-            {
-                name: 'posts:delete',
-                when: (req) => req.user.isAdmin
-            }
+            'users/posts:view',
+            'users:edit',
+            'posts:delete',
+            'events:create',
+            'events:edit',
+            'events:delete'
         ],
         inherits: [ 'user' ]
     }

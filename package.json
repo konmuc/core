@@ -12,10 +12,11 @@
     "start": "node src/index.js"
   },
   "dependencies": {
-    "@konmuc/authc": "^1.0.2",
+    "@konmuc/authc": "^1.0.3",
     "@konmuc/authz": "^1.0.0",
     "@types/express": "^4.16.0",
     "body-parser": "^1.18.3",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3"
   },
   "devDependencies": {

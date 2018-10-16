@@ -27,8 +27,17 @@ const PostModel = new Schema({
         ]
     },
     comments: [ {
-            text: String,
-            date: Number,
+            content: {
+                text: String,
+                metadata: {
+                    date: Number,
+                    image: String,
+                    geolocation: {
+                        lat: String,
+                        lon: String
+                    }
+                }
+            },
             username: String,
             votes: {
                 upvotes: [
